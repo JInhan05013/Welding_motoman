@@ -151,7 +151,12 @@ def visualize_predictions(y_true, y_pred, title='Predicted vs Actual Values'):
 
 samplerate = 44100
 layers_data,audio_data_total,height_data_total = extract_data(data_dir)
+for sequence in audio_data_total:
+    sequence = np.array(sequence)
+    plt.plot(sequence)
+    plt.show()
 
+quit()
 # plot_data(layers_data)
 audio_data_list_raw = np.concatenate(audio_data_total)
 audio_data_list = audio_data_list_raw.astype('float32') / np.max(np.abs(audio_data_list_raw))
