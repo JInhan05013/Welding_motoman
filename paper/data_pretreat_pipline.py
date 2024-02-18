@@ -39,13 +39,13 @@ for n in range(0,24):
         end_sample_index = int(end_time_sec * samplerate)
         welding_duration_mic = end_welding_mic - start_welding_mic
         welding_audio_data = audio_data[start_sample_index:end_sample_index]
-        if n % 2 == 1:  # 如果是奇数层，则翻转audio_data
-            welding_audio_data = np.flip(welding_audio_data, axis=0)  # 假设我们沿着时间轴翻转数据
+        if n % 2 == 1:  # flit audio_data if backward direction
+            welding_audio_data = np.flip(welding_audio_data, axis=0)  
 
         # print('np.size(welding_audio_data)',np.size(welding_audio_data))
         # np.save(data_dir+'welding_audio_data.npy',welding_audio_data)
     else:
-        # 如果没有找到合适的频率，可能需要其他逻辑来处理
+        # No suitable frequency
         print("No signal captured")
 
     print('------------------------------------------------')
@@ -75,26 +75,26 @@ for n in range(0,24):
 
     # print('np.size(height_difference)',np.size(height_difference))
     # np.save(data_dir+'height_difference.npy',height_difference)
-    # 将处理好的数据添加到字典
+    # Append in dictionary
     layers_data[f'layer_{n}'] = {
-        'welding_audio_data': welding_audio_data,  # 或者是经过一些处理的音频数据变量
+        'welding_audio_data': welding_audio_data,  
         'height_difference': height_difference,
-        'segments': []  # 正确初始化'segments'键
+        'segments': [] 
     }
-    # 高度差信号拆分
-    segment_length_mm = 1.5  # 每个segment的长度为15mm
-    samples_per_segment_height = int(segment_length_mm / 0.1)  # 每个高度差segment包含的样本数
-    total_segments_height = int(np.ceil(len(height_difference) / samples_per_segment_height))  # 高度差信号拆分成的段数
+    # Make height data segments
+    segment_length_mm = 1.5  # length of segment = 15mm
+    samples_per_segment_height = int(segment_length_mm / 0.1)  # the sample numbers in each segment
+    total_segments_height = int(np.ceil(len(height_difference) / samples_per_segment_height))  # segments numbers
 
-    # 声音信号拆分
-    # 计算声音信号应拆分为相同数量的segments
-    samples_per_segment_audio = int(np.floor(len(welding_audio_data) / total_segments_height))  # 声音信号每个segment的样本数
+    # Make audio data segments
+    # Same segments numbers with height data
+    samples_per_segment_audio = int(np.floor(len(welding_audio_data) / total_segments_height))  # the sample numbers in each segment
 
-    # 初始化存储segments的列表
+    # Initialization
     height_segments = []
     audio_segments = []
 
-    # 拆分高度差信号和声音信号
+    # Split height and audio data
     for i in range(total_segments_height):
         start_index_height = i * samples_per_segment_height
         end_index_height = start_index_height + samples_per_segment_height
@@ -104,7 +104,7 @@ for n in range(0,24):
         end_index_audio = start_index_audio + samples_per_segment_audio
         segment_audio = welding_audio_data[start_index_audio:end_index_audio]
 
-        # 确保最后一个segment包含剩余所有样本
+        # make sure the last one has all the samples
         if i == total_segments_height - 1:
             segment_height = height_difference[start_index_height:]
             segment_audio = welding_audio_data[start_index_audio:]
@@ -112,16 +112,15 @@ for n in range(0,24):
         height_segments.append(segment_height)
         audio_segments.append(segment_audio)
         if len(segment_audio) >= 2200:
-        # 找到中间的索引
+            # find the mid index
             mid_index = len(segment_audio) // 2
-        # 从中间向两侧各取1100个样本
+            # get the data in center
             audio_feature = segment_audio[mid_index-1100:mid_index+1100]
         else:
-        # 如果audio_segment的长度小于2200，则可以选择填充或者其他逻辑处理
-        # 这里为了演示，我们简单地使用现有样本作为特征
+            # If sample is smaller than 2200, use all of them
             audio_feature = segment_audio
 
-        # 将拆分后的segments存入字典
+        # save in dictionary
         layers_data[f'layer_{n}']['segments'].append({
             'segment_number': i,
             'audio_segment': segment_audio,
@@ -129,12 +128,12 @@ for n in range(0,24):
             'height_segment': segment_height
         })
 
-# 目标目录用于存储字典
+# Path for dictionary saving
 target_dir = 'Test_data/'
 if not os.path.exists(target_dir):
     os.makedirs(target_dir)
 
-# 保存字典到文件
+# Save dictionary
 dict_file_path = os.path.join(target_dir, f'{test_dir}.pkl')
 with open(dict_file_path, 'wb') as file:
     pickle.dump(layers_data, file)
