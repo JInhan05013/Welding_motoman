@@ -147,8 +147,6 @@ for n in range(2,24):
     #     segment_data = profile_height[start_index:end_index]
     #     plt.plot(segment_data[:, 0], segment_data[:, 1], color=colors[i], label='Height Profile' if i == 0 else "")
 
-    # # 如果您只想为一个段加上legend，您可以在上述循环中只为一个段添加label。如上例中，只为第一个segment设置了label。
-
     # plt.xlabel('Distance (mm)')
     # plt.ylabel('Height')
     # plt.title('Height Profile with Segments')

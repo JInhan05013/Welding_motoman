@@ -50,16 +50,16 @@ for layer_name in layers_data.keys():
         t = librosa.frames_to_time(frames, sr=sampling_rate, hop_length=512)
 
         # Plot Spectrogram with Spectral Centroid and Zero Crossing Rate
-        # plt.figure(figsize=(10, 4))
-        # librosa.display.specshow(S_db, sr=sampling_rate, hop_length=512, x_axis='time', y_axis='log', cmap='viridis')
-        # plt.colorbar(format='%+2.0f dB')
-        # plt.plot(t, spectral_centroids, color='w', label='Spectral Centroid')
-        # plt.plot(t, zcr * np.max(spectral_centroids), color='r', label='Zero Crossing Rate (scaled)')
-        # plt.title(f'Spectrogram, Spectral Centroid, and ZCR of {layer_name} Segment {segment_index}')
-        # plt.xlabel('Time (s)')
-        # plt.ylabel('Frequency (Hz)')
-        # plt.legend(loc='upper right')
-        # plt.show()
+        plt.figure(figsize=(10, 4))
+        librosa.display.specshow(S_db, sr=sampling_rate, hop_length=512, x_axis='time', y_axis='log', cmap='viridis')
+        plt.colorbar(format='%+2.0f dB')
+        plt.plot(t, spectral_centroids, color='w', label='Spectral Centroid')
+        plt.plot(t, zcr * np.max(spectral_centroids), color='r', label='Zero Crossing Rate (scaled)')
+        plt.title(f'Spectrogram, Spectral Centroid, and ZCR of {layer_name} Segment {segment_index}')
+        plt.xlabel('Time (s)')
+        plt.ylabel('Frequency (Hz)')
+        plt.legend(loc='upper right')
+        plt.show()
 
         # # Plot RMS separately
         # plt.figure(figsize=(10, 2))

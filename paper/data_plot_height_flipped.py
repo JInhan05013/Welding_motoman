@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 data_dir = '../data/wall_weld_test/ER4043_model_150ipm_2023_10_08_08_23_41'
 
-# 遍历文件夹提取数据
+# Load data
 def extract_data(data_dir):
-    layers_data = []  # 存储每层的数据
+    layers_data = [] 
     audio_data_total = []
     height_data_total = []
     for folder_name in sorted(os.listdir(data_dir), key=lambda x: int(x.split('_')[-1])):
@@ -22,20 +22,18 @@ def extract_data(data_dir):
                 height_data_total.append(height_data)
     return layers_data, audio_data_total, height_data_total
 
-# 绘制数据并使用高度差信号的长度作为x轴
+
 def plot_data(layers_data, sample_distance=0.1):
     for i, (audio_data, height_data) in enumerate(layers_data):
         x_axis_length = len(height_data) * sample_distance
         if i % 2 == 1:
-            # 反向时，调整x轴刻度使其显示为70到0
             x_axis = np.linspace(x_axis_length, 0, len(height_data))
         else:
-            # 正向时，x轴刻度从0到70
             x_axis = np.linspace(0, x_axis_length, len(height_data))
         
         audio_x_axis = np.linspace(x_axis[0], x_axis[-1], len(audio_data))
 
-        fig, ax1 = plt.subplots(figsize=(10, 6))  # 调整图表尺寸以便于观察
+        fig, ax1 = plt.subplots(figsize=(10, 6))  
 
         color = 'tab:red'
         ax1.set_xlabel('Distance (mm)')

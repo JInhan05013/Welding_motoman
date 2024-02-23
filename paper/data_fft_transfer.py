@@ -30,11 +30,11 @@ for layer_name in layers_data.keys():
         # Plot 
         plt.plot(frequency[:n // 2], magnitude[:n // 2], color=colors[segment_index], label=f'Layer {layer_name}, Segment {segment_index}')
 
-    # Plot parameters
-    plt.xlabel('Frequency (Hz)')
-    plt.ylabel('Magnitude')
-    plt.title(f'FFT of Audio Signals Across {layer_name}')
-    plt.grid(True)
-    # plt.legend() 
-    plt.show()
-    plt.close()
+        # Plot parameters
+        plt.xlabel('Frequency (Hz)')
+        plt.ylabel('Magnitude')
+        plt.title(f'FFT of Audio Signals Across {layer_name}')
+        plt.grid(True)
+        # plt.legend() 
+        plt.show()
+        plt.close()
