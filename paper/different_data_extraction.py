@@ -97,7 +97,7 @@ def plot_and_print_segment_pairs(data, top_segment_pairs):
         plt.show()
 # 主函数
 def main():
-    file_path = 'Test_data/ER4043_model_150ipm_2023_10_08_08_23_41.pkl'  # 更新为您的文件路径
+    file_path = 'Test_data/ER4043_correction_100ipm_2023_09_27_20_53_05.pkl'  # 更新为您的文件路径
     data = load_data(file_path)
     top_segments = find_top_segment_pairs(data)
     plot_and_print_segment_pairs(data, top_segments)
