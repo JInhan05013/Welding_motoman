@@ -33,7 +33,7 @@ def plot_segments(data, layer_nums, segment_nums):
         # FFT and Spectral Centroid Calculation
         xf, yf = compute_fft(segment_info['audio_feature'])
         centroid = spectral_centroid(xf, yf)
-
+        print(f'Layer {layer_num} Segment {segment_num} spectral centroid:', int(centroid))
         # Plotting
         plt.subplot(1, 2, 1)
         plt.plot(xf, yf, label=f'Layer {layer_num} Segment {segment_num}', color=colors[i])
@@ -58,8 +58,8 @@ def main():
     data = load_data(file_path)
 
     # 用户输入
-    layer_nums = [4, 9]  # 示例层数
-    segment_nums = [25, 25]  # 示例段序号
+    layer_nums = [4,6,8,10,12,14,16]  # 示例层数
+    segment_nums = [30,30,30,30,30,30,30]  # 示例段序号
 
     plot_segments(data, layer_nums, segment_nums)
 
