@@ -12,7 +12,14 @@ layers_data = {}
 for n in range(0,24):
  
     data_dir=f'{file_dir}layer_{n}/'
-
+    ## velocity
+    if n in [0, 1]:
+        v = 5
+    elif n > 1:
+        if n % 2 == 0:  # n is even
+            v = n + 2
+        else:  # n is odd
+            v = n + 1
     ## microphone data
     wavfile = wave.open(f'{data_dir}mic_recording.wav', 'rb')
     samplerate = 44000
@@ -33,10 +40,10 @@ for n in range(0,24):
     if len(selected_freq_indices) > 0:
         start_welding_mic = selected_mic_ts[selected_freq_indices[0]]
         end_welding_mic = selected_mic_ts[selected_freq_indices[-1]]
-        start_time_sec = start_welding_mic  
-        end_time_sec = end_welding_mic  
-        start_sample_index = int(start_time_sec * samplerate)
-        end_sample_index = int(end_time_sec * samplerate)
+        start_sample_index = int(190752)
+        end_sample_index = len(audio_data)-int(48000)
+        start_time_sec = start_sample_index/samplerate
+        end_time_sec = end_sample_index/samplerate
         welding_duration_mic = end_welding_mic - start_welding_mic
         welding_audio_data = audio_data[start_sample_index:end_sample_index]
         if n % 2 == 1:  # flit audio_data if backward direction
@@ -79,6 +86,7 @@ for n in range(0,24):
     layers_data[f'layer_{n}'] = {
         'welding_audio_data': welding_audio_data,  
         'height_difference': height_difference,
+        'layer_velocity': v,
         'segments': [] 
     }
     # Make height data segments
@@ -125,7 +133,8 @@ for n in range(0,24):
             'segment_number': i,
             'audio_segment': segment_audio,
             'audio_feature': audio_feature,
-            'height_segment': segment_height
+            'height_segment': segment_height,
+            'segment_velocity': v
         })
 
 # Path for dictionary saving

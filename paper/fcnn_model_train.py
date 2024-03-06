@@ -31,7 +31,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 # Model training
-model = MLPRegressor(hidden_layer_sizes=(50,100,100,100,100,100,100,), activation='relu', solver='adam', max_iter=500, random_state=42)
+model = MLPRegressor(hidden_layer_sizes=(50,100,100,), activation='relu', solver='adam', max_iter=500, random_state=42)
 model.fit(X_train_scaled, y_train)
 
 # Prediction

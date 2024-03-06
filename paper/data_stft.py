@@ -31,7 +31,7 @@ for layer_name in layers_data.keys():
         
         # Transfer to DB
         S_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)
-
+        segment_data['spectrogram'] = S_db
         # Calculate Spectral Centroid
         spectral_centroids = librosa.feature.spectral_centroid(y=audio_feature, sr=sampling_rate, n_fft=2048, hop_length=512)[0]
         # print(f'Spectral Centroid of {layer_name} Segment {segment_index}: ',spectral_centroids )
@@ -49,17 +49,17 @@ for layer_name in layers_data.keys():
         frames = range(len(spectral_centroids))
         t = librosa.frames_to_time(frames, sr=sampling_rate, hop_length=512)
 
-        # Plot Spectrogram with Spectral Centroid and Zero Crossing Rate
-        plt.figure(figsize=(10, 4))
-        librosa.display.specshow(S_db, sr=sampling_rate, hop_length=512, x_axis='time', y_axis='log', cmap='viridis')
-        plt.colorbar(format='%+2.0f dB')
-        plt.plot(t, spectral_centroids, color='w', label='Spectral Centroid')
-        plt.plot(t, zcr * np.max(spectral_centroids), color='r', label='Zero Crossing Rate (scaled)')
-        plt.title(f'Spectrogram, Spectral Centroid, and ZCR of {layer_name} Segment {segment_index}')
-        plt.xlabel('Time (s)')
-        plt.ylabel('Frequency (Hz)')
-        plt.legend(loc='upper right')
-        plt.show()
+        # # Plot Spectrogram with Spectral Centroid and Zero Crossing Rate
+        # plt.figure(figsize=(10, 4))
+        # librosa.display.specshow(S_db, sr=sampling_rate, hop_length=512, x_axis='time', y_axis='log', cmap='viridis')
+        # plt.colorbar(format='%+2.0f dB')
+        # plt.plot(t, spectral_centroids, color='w', label='Spectral Centroid')
+        # plt.plot(t, zcr * np.max(spectral_centroids), color='r', label='Zero Crossing Rate (scaled)')
+        # plt.title(f'Spectrogram, Spectral Centroid, and ZCR of {layer_name} Segment {segment_index}')
+        # plt.xlabel('Time (s)')
+        # plt.ylabel('Frequency (Hz)')
+        # plt.legend(loc='upper right')
+        # plt.show()
 
         # # Plot RMS separately
         # plt.figure(figsize=(10, 2))
